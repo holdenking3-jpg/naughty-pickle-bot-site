@@ -1,0 +1,23 @@
+name: Deploy to DreamHost
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy index.html via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          username: 'dh_7dkeam'
+          server: 'bots.thenaughtypickle.com'
+          password: ${{ secrets.DREAMHOST_SFTP_PASSWORD }}
+          local_path: './index.html'
+          remote_path: '/home/dh_7dkeam/bots.thenaughtypickle.com/'
+          sftp_only: true

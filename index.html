@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Naughty Pickle | Bot Support</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #04040f;
+      color: #e2e8f0;
+    }
+
+    /* ---------- Gradient text ---------- */
+    .gradient-text {
+      background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #34d399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-text-purple {
+      background: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ---------- Glow button ---------- */
+    .btn-primary {
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      box-shadow: 0 0 30px rgba(124, 58, 237, 0.35);
+      transition: all 0.25s ease;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 0 45px rgba(124, 58, 237, 0.6);
+      transform: translateY(-1px);
+    }
+
+    /* ---------- Ghost button ---------- */
+    .btn-ghost {
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: all 0.25s ease;
+    }
+    .btn-ghost:hover {
+      border-color: rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* ---------- Cards ---------- */
+    .card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    .card:hover {
+      background: rgba(255,255,255,0.055);
+      border-color: rgba(124,58,237,0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 20px 60px rgba(124,58,237,0.12);
+    }
+
+    /* ---------- Noise grain overlay ---------- */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ---------- Hero glow orbs ---------- */
+    .orb {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+    .orb-purple {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%);
+    }
+    .orb-blue {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%);
+    }
+
+    /* ---------- Scrolling logo strip ---------- */
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-track { animation: marquee 28s linear infinite; }
+    .marquee-track:hover { animation-play-state: paused; }
+
+    /* ---------- Divider ---------- */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    }
+
+    /* ---------- Pricing card highlight ---------- */
+    .pricing-featured {
+      background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(37,99,235,0.08));
+      border: 1px solid rgba(124,58,237,0.4);
+      box-shadow: 0 0 60px rgba(124,58,237,0.12);
+    }
+
+    /* ---------- Nav ---------- */
+    .nav-blur {
+      background: rgba(4, 4, 15, 0.75);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* ---------- Step connector ---------- */
+    .step-line {
+      background: linear-gradient(180deg, rgba(124,58,237,0.5), transparent);
+    }
+
+    /* ---------- Stat number glow ---------- */
+    .stat-number {
+      text-shadow: 0 0 40px rgba(124,58,237,0.5);
+    }
+
+    /* ---------- FAQ ---------- */
+    .faq-item summary {
+      cursor: pointer;
+      list-style: none;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item[open] summary .faq-icon { transform: rotate(45deg); }
+    .faq-icon { transition: transform 0.2s ease; }
+
+    /* ---------- Testimonial card ---------- */
+    .testimonial-card {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    /* ---------- Tag badge ---------- */
+    .tag {
+      background: rgba(124,58,237,0.15);
+      border: 1px solid rgba(124,58,237,0.3);
+      color: #a78bfa;
+    }
+
+    /* ---------- Pulse dot ---------- */
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+
+    /* ---------- Check icon ---------- */
+    .check-icon {
+      width: 20px; height: 20px; flex-shrink: 0;
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+  </style>
+</head>
+<body class="relative overflow-x-hidden">
+
+  <!-- ===================== NAV ===================== -->
+  <nav class="nav-blur fixed top-0 left-0 right-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-2">
+        <img src="https://www.thenaughtypickle.com/wp-content/uploads/2025/08/ChatGPT-Image-Aug-26-2025-02_10_58-PM.png" alt="The Naughty Pickle" class="h-9 w-auto rounded-lg" />
+        <span class="font-bold text-white text-base tracking-tight leading-tight">The Naughty Pickle<br/><span class="gradient-text-purple text-xs font-semibold tracking-widest uppercase">Bot Support</span></span>
+      </a>
+
+      <!-- Links -->
+      <div class="hidden md:flex items-center gap-8 text-sm text-gray-400">
+        <a href="#how-it-works" class="hover:text-white transition-colors">How it Works</a>
+        <a href="#features" class="hover:text-white transition-colors">Features</a>
+        <a href="#use-cases" class="hover:text-white transition-colors">Use Cases</a>
+        <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
+        <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
+      </div>
+
+      <!-- CTA -->
+      <a href="#contact" class="btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-lg">
+        Book a Demo
+      </a>
+    </div>
+  </nav>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 overflow-hidden">
+    <!-- Orbs -->
+    <div class="orb orb-purple" style="top:-100px; left:-100px;"></div>
+    <div class="orb orb-blue" style="bottom:-50px; right:-50px;"></div>
+
+    <!-- Live badge -->
+    <div class="relative z-10 inline-flex items-center gap-2 tag text-xs font-medium px-3 py-1.5 rounded-full mb-8">
+      <span class="pulse-dot w-1.5 h-1.5 rounded-full bg-violet-400"></span>
+      AI Voice Agents — Now Handling Real Calls 24/7
+    </div>
+
+    <!-- Headline -->
+    <h1 class="relative z-10 text-5xl md:text-7xl font-black text-white leading-[1.05] tracking-tight max-w-4xl mb-6">
+      Your Business.<br />
+      <span class="gradient-text">Never Sleeps.</span>
+    </h1>
+
+    <!-- Subtext -->
+    <p class="relative z-10 text-lg md:text-xl text-gray-400 max-w-2xl mb-10 leading-relaxed">
+      We build and deploy custom AI voice agents that answer calls, qualify leads, book appointments, and follow up — around the clock, without you lifting a finger.
+    </p>
+
+    <!-- CTAs -->
+    <div class="relative z-10 flex flex-col sm:flex-row items-center gap-4 mb-16">
+      <a href="#contact" class="btn-primary text-white font-semibold px-8 py-4 rounded-xl text-base w-full sm:w-auto">
+        Get Your Agent Built →
+      </a>
+      <a href="#how-it-works" class="btn-ghost text-gray-300 font-medium px-8 py-4 rounded-xl text-base w-full sm:w-auto">
+        See How It Works
+      </a>
+    </div>
+
+    <!-- Metrics strip -->
+    <div class="relative z-10 grid grid-cols-3 gap-8 md:gap-16 max-w-2xl w-full">
+      <div>
+        <div class="text-3xl md:text-4xl font-black text-white stat-number">500+</div>
+        <div class="text-sm text-gray-500 mt-1">Calls Handled Daily</div>
+      </div>
+      <div>
+        <div class="text-3xl md:text-4xl font-black text-white stat-number">98%</div>
+        <div class="text-sm text-gray-500 mt-1">Answer Rate</div>
+      </div>
+      <div>
+        <div class="text-3xl md:text-4xl font-black text-white stat-number">3min</div>
+        <div class="text-sm text-gray-500 mt-1">Avg. Response Time</div>
+      </div>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="relative z-10 mt-16 flex flex-col items-center gap-2 opacity-40">
+      <div class="w-px h-8 bg-gradient-to-b from-transparent to-white"></div>
+      <span class="text-xs text-gray-500 uppercase tracking-widest">Scroll</span>
+    </div>
+  </section>
+
+  <!-- ===================== LOGO STRIP ===================== -->
+  <section class="py-12 overflow-hidden relative z-10">
+    <div class="section-divider mb-8"></div>
+    <p class="text-center text-xs text-gray-600 uppercase tracking-widest mb-8">Powered by The Naughty Pickle</p>
+    <div class="overflow-hidden">
+      <div class="marquee-track flex items-center gap-20 whitespace-nowrap w-max">
+        <img src="https://www.thenaughtypickle.com/wp-content/uploads/2025/08/ChatGPT-Image-Aug-26-2025-02_10_58-PM.png" alt="The Naughty Pickle" class="h-10 w-auto opacity-40" />
+        <img src="https://www.thenaughtypickle.com/wp-content/uploads/2025/08/ChatGPT-Image-Aug-26-2025-02_10_58-PM.png" alt="The Naughty Pickle" class="h-10 w-auto opacity-40" />
+        <img src="https://www.thenaughtypickle.com/wp-content/uploads/2025/08/ChatGPT-Image-Aug-26-2025-02_10_58-PM.png" alt="The Naughty Pickle" class="h-10 w-auto opacity-40" />
+        <img src="https://www.thenaughtypickle.com/wp-content/uploads/2025/08/ChatGPT-Image-Aug-26-2025-02_10_58-PM.png" alt="The Naughty Pickle" class="h-10 w-auto opacity-40" />
+        <img src="https://www.thenaughtypickle.com/wp-content/uploads/2025/08/ChatGPT-Image-Aug-26-2025-02_10_58-PM.png" alt="The Naughty Pickle" class="h-10 w-auto opacity-40" />
+        <img src="https://www.thenaughtypickle.com/wp-content/uploads/2025/08/ChatGPT-Image-Aug-26-2025-02_10_58-PM.png" alt="The Naughty Pickle" class="h-10 w-auto opacity-40" />
+        <!-- Duplicate for seamless loop -->
+        <img src="https://www.thenaughtypickle.com/wp-content/uploads/2025/08/ChatGPT-Image-Aug-26-2025-02_10_58-PM.png" alt="The Naughty Pickle" class="h-10 w-auto opacity-40" />
+        <img src="https://www.thenaughtypickle.com/wp-content/uploads/2025/08/ChatGPT-Image-Aug-26-2025-02_10_58-PM.png" alt="The Naughty Pickle" class="h-10 w-auto opacity-40" />
+        <img src="https://www.thenaughtypickle.com/wp-content/uploads/2025/08/ChatGPT-Image-Aug-26-2025-02_10_58-PM.png" alt="The Naughty Pickle" class="h-10 w-auto opacity-40" />
+        <img src="https://www.thenaughtypickle.com/wp-content/uploads/2025/08/ChatGPT-Image-Aug-26-2025-02_10_58-PM.png" alt="The Naughty Pickle" class="h-10 w-auto opacity-40" />
+        <img src="https://www.thenaughtypickle.com/wp-content/uploads/2025/08/ChatGPT-Image-Aug-26-2025-02_10_58-PM.png" alt="The Naughty Pickle" class="h-10 w-auto opacity-40" />
+        <img src="https://www.thenaughtypickle.com/wp-content/uploads/2025/08/ChatGPT-Image-Aug-26-2025-02_10_58-PM.png" alt="The Naughty Pickle" class="h-10 w-auto opacity-40" />
+      </div>
+    </div>
+    <div class="section-divider mt-8"></div>
+  </section>
+
+  <!-- ===================== STATS ===================== -->
+  <section class="py-20 px-6 relative z-10">
+    <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div class="text-center">
+        <div class="text-4xl md:text-5xl font-black gradient-text mb-2">$0</div>
+        <div class="text-sm text-gray-500 leading-snug">Missed calls cost you<br/>this much to fix</div>
+      </div>
+      <div class="text-center">
+        <div class="text-4xl md:text-5xl font-black gradient-text mb-2">24/7</div>
+        <div class="text-sm text-gray-500 leading-snug">Your agent is always<br/>on, never tired</div>
+      </div>
+      <div class="text-center">
+        <div class="text-4xl md:text-5xl font-black gradient-text mb-2">72hrs</div>
+        <div class="text-sm text-gray-500 leading-snug">From purchase to<br/>live deployment</div>
+      </div>
+      <div class="text-center">
+        <div class="text-4xl md:text-5xl font-black gradient-text mb-2">4.9★</div>
+        <div class="text-sm text-gray-500 leading-snug">Average client<br/>satisfaction score</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HOW IT WORKS ===================== -->
+  <section id="how-it-works" class="py-24 px-6 relative z-10">
+    <div class="max-w-4xl mx-auto">
+      <!-- Heading -->
+      <div class="text-center mb-16">
+        <span class="tag text-xs font-medium px-3 py-1.5 rounded-full">The Process</span>
+        <h2 class="text-4xl md:text-5xl font-black text-white mt-6 mb-4 leading-tight">
+          Live in 72 hours,<br/><span class="gradient-text">not 72 weeks.</span>
+        </h2>
+        <p class="text-gray-400 max-w-xl mx-auto">We handle everything — from scripting to deployment. You get a fully functioning AI agent without touching a single line of code.</p>
+      </div>
+
+      <!-- Steps -->
+      <div class="relative flex flex-col gap-0">
+        <!-- Step 1 -->
+        <div class="flex gap-8 items-start">
+          <div class="flex flex-col items-center">
+            <div class="w-12 h-12 rounded-xl btn-primary flex items-center justify-center text-white font-black text-lg flex-shrink-0">1</div>
+            <div class="step-line w-px flex-1 mt-2 mb-0" style="height:80px;"></div>
+          </div>
+          <div class="pb-16 pt-2">
+            <h3 class="text-xl font-bold text-white mb-2">Discovery Call</h3>
+            <p class="text-gray-400 leading-relaxed max-w-lg">We learn your business — your tone, your FAQs, how you handle leads, and what outcomes you need. No templates. Your agent is built specifically for you.</p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="flex gap-8 items-start">
+          <div class="flex flex-col items-center">
+            <div class="w-12 h-12 rounded-xl btn-primary flex items-center justify-center text-white font-black text-lg flex-shrink-0">2</div>
+            <div class="step-line w-px flex-1 mt-2" style="height:80px;"></div>
+          </div>
+          <div class="pb-16 pt-2">
+            <h3 class="text-xl font-bold text-white mb-2">We Build &amp; Train</h3>
+            <p class="text-gray-400 leading-relaxed max-w-lg">Our team scripts the conversation flows, integrates your calendar and CRM, and trains the AI on your brand voice. You review and approve before anything goes live.</p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="flex gap-8 items-start">
+          <div class="flex flex-col items-center">
+            <div class="w-12 h-12 rounded-xl btn-primary flex items-center justify-center text-white font-black text-lg flex-shrink-0">3</div>
+          </div>
+          <div class="pt-2">
+            <h3 class="text-xl font-bold text-white mb-2">Go Live + Ongoing Support</h3>
+            <p class="text-gray-400 leading-relaxed max-w-lg">Your agent launches and starts handling calls immediately. We monitor performance, fine-tune the AI, and send you weekly reports — every month, as long as you're a client.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider max-w-6xl mx-auto"></div>
+
+  <!-- ===================== FEATURES ===================== -->
+  <section id="features" class="py-24 px-6 relative z-10">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="tag text-xs font-medium px-3 py-1.5 rounded-full">What's Included</span>
+        <h2 class="text-4xl md:text-5xl font-black text-white mt-6 mb-4">
+          Everything your agent needs.<br/><span class="gradient-text">Nothing you don't.</span>
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-5">
+
+        <!-- Feature 1 -->
+        <div class="card rounded-2xl p-7">
+          <div class="w-12 h-12 rounded-xl mb-5 flex items-center justify-center" style="background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.25);">
+            <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" fill="#a78bfa"/></svg>
+          </div>
+          <h3 class="text-white font-bold text-lg mb-2">Natural Voice Conversations</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Human-sounding AI that handles objections, answers questions, and moves prospects forward — indistinguishable from a real rep.</p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="card rounded-2xl p-7">
+          <div class="w-12 h-12 rounded-xl mb-5 flex items-center justify-center" style="background:rgba(37,99,235,0.15);border:1px solid rgba(37,99,235,0.25);">
+            <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z" fill="#60a5fa"/></svg>
+          </div>
+          <h3 class="text-white font-bold text-lg mb-2">Calendar Integration</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Directly books appointments into your calendar in real time. No back-and-forth, no double bookings, no missed slots.</p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="card rounded-2xl p-7">
+          <div class="w-12 h-12 rounded-xl mb-5 flex items-center justify-center" style="background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.2);">
+            <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z" fill="#34d399"/></svg>
+          </div>
+          <h3 class="text-white font-bold text-lg mb-2">SMS Follow-Up Sequences</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">After every call, your agent automatically fires personalized SMS follow-ups to leads who didn't convert — keeping your pipeline warm.</p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="card rounded-2xl p-7">
+          <div class="w-12 h-12 rounded-xl mb-5 flex items-center justify-center" style="background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.2);">
+            <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z" fill="#fb923c"/></svg>
+          </div>
+          <h3 class="text-white font-bold text-lg mb-2">Lead Qualification</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Your agent asks the right questions and scores leads before routing them to you — so you only spend time on prospects who are ready to buy.</p>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="card rounded-2xl p-7">
+          <div class="w-12 h-12 rounded-xl mb-5 flex items-center justify-center" style="background:rgba(244,63,94,0.12);border:1px solid rgba(244,63,94,0.2);">
+            <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" fill="#f43f5e"/></svg>
+          </div>
+          <h3 class="text-white font-bold text-lg mb-2">CRM &amp; Spreadsheet Sync</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Every call, every contact, every outcome — automatically logged into your CRM or Google Sheets. Zero manual data entry, ever.</p>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="card rounded-2xl p-7">
+          <div class="w-12 h-12 rounded-xl mb-5 flex items-center justify-center" style="background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.25);">
+            <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" fill="#a78bfa"/></svg>
+          </div>
+          <h3 class="text-white font-bold text-lg mb-2">Weekly Performance Reports</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">A clean summary delivered to your inbox every week: calls handled, leads generated, appointments booked, and conversion rates.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== USE CASES ===================== -->
+  <section id="use-cases" class="py-24 px-6 relative z-10">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="tag text-xs font-medium px-3 py-1.5 rounded-full">Industries We Serve</span>
+        <h2 class="text-4xl md:text-5xl font-black text-white mt-6 mb-4">
+          Built for businesses that<br/><span class="gradient-text">can't afford to miss calls.</span>
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        <div class="card rounded-2xl p-6 flex gap-4">
+          <div class="text-3xl">🏠</div>
+          <div>
+            <h3 class="text-white font-bold mb-1">Real Estate</h3>
+            <p class="text-gray-500 text-sm">Qualify buyers and sellers, book showings, and follow up on listings 24/7.</p>
+          </div>
+        </div>
+
+        <div class="card rounded-2xl p-6 flex gap-4">
+          <div class="text-3xl">🦷</div>
+          <div>
+            <h3 class="text-white font-bold mb-1">Dental &amp; Medical</h3>
+            <p class="text-gray-500 text-sm">Handle appointment requests, reminders, and new patient intake automatically.</p>
+          </div>
+        </div>
+
+        <div class="card rounded-2xl p-6 flex gap-4">
+          <div class="text-3xl">🔧</div>
+          <div>
+            <h3 class="text-white font-bold mb-1">Home Services</h3>
+            <p class="text-gray-500 text-sm">HVAC, plumbing, roofing — capture every inbound service request, even at 2am.</p>
+          </div>
+        </div>
+
+        <div class="card rounded-2xl p-6 flex gap-4">
+          <div class="text-3xl">💆</div>
+          <div>
+            <h3 class="text-white font-bold mb-1">Med Spas &amp; Salons</h3>
+            <p class="text-gray-500 text-sm">Book consultations, answer treatment questions, and reduce no-shows via SMS.</p>
+          </div>
+        </div>
+
+        <div class="card rounded-2xl p-6 flex gap-4">
+          <div class="text-3xl">⚖️</div>
+          <div>
+            <h3 class="text-white font-bold mb-1">Law Firms</h3>
+            <p class="text-gray-500 text-sm">Screen intake calls, collect case details, and route qualified leads to attorneys.</p>
+          </div>
+        </div>
+
+        <div class="card rounded-2xl p-6 flex gap-4">
+          <div class="text-3xl">🚗</div>
+          <div>
+            <h3 class="text-white font-bold mb-1">Auto Dealerships</h3>
+            <p class="text-gray-500 text-sm">Respond to inventory inquiries, schedule test drives, and follow up on quotes.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider max-w-6xl mx-auto"></div>
+
+  <!-- ===================== ANALYTICS DASHBOARD MOCKUP ===================== -->
+  <section id="dashboard" class="py-24 px-6 relative z-10">
+    <div class="max-w-6xl mx-auto">
+
+      <div class="text-center mb-14">
+        <span class="tag text-xs font-medium px-3 py-1.5 rounded-full">Growth Plan Feature</span>
+        <h2 class="text-4xl md:text-5xl font-black text-white mt-6 mb-4">
+          Know exactly what your<br/><span class="gradient-text">agent is doing.</span>
+        </h2>
+        <p class="text-gray-400 max-w-xl mx-auto">Your Growth dashboard updates in real time — every call, lead, and booking tracked and laid out cleanly so you never have to guess.</p>
+      </div>
+
+      <!-- Browser chrome frame -->
+      <div class="rounded-2xl overflow-hidden" style="border:1px solid rgba(124,58,237,0.3); box-shadow: 0 0 80px rgba(124,58,237,0.12), 0 40px 80px rgba(0,0,0,0.5);">
+
+        <!-- Browser top bar -->
+        <div style="background:#0d0d1a; border-bottom:1px solid rgba(255,255,255,0.06);" class="px-4 py-3 flex items-center gap-3">
+          <div class="flex gap-1.5">
+            <div class="w-3 h-3 rounded-full" style="background:#ff5f57"></div>
+            <div class="w-3 h-3 rounded-full" style="background:#ffbd2e"></div>
+            <div class="w-3 h-3 rounded-full" style="background:#28c840"></div>
+          </div>
+          <div class="flex-1 flex justify-center">
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);" class="text-xs text-gray-500 px-4 py-1 rounded-md">dashboard.thenaughtypickle.com</div>
+          </div>
+        </div>
+
+        <!-- Dashboard UI -->
+        <div style="background:#07071a;" class="p-5">
+
+          <!-- Dashboard nav -->
+          <div class="flex items-center justify-between mb-5">
+            <div class="flex items-center gap-6">
+              <span class="text-white text-sm font-semibold">Overview</span>
+              <span class="text-gray-600 text-sm">Calls</span>
+              <span class="text-gray-600 text-sm">Leads</span>
+              <span class="text-gray-600 text-sm">Settings</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);" class="text-xs text-gray-400 px-3 py-1.5 rounded-lg">Last 30 days ▾</div>
+              <div class="pulse-dot w-2 h-2 rounded-full bg-green-400"></div>
+              <span class="text-xs text-green-400">Agent Live</span>
+            </div>
+          </div>
+
+          <!-- Stat cards -->
+          <div class="grid grid-cols-4 gap-3 mb-5">
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06);" class="rounded-xl p-4">
+              <div class="text-xs text-gray-500 mb-1">Total Calls</div>
+              <div class="text-2xl font-black text-white">487</div>
+              <div class="text-xs text-green-400 mt-1">↑ 14% vs last month</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06);" class="rounded-xl p-4">
+              <div class="text-xs text-gray-500 mb-1">Leads Qualified</div>
+              <div class="text-2xl font-black text-white">134</div>
+              <div class="text-xs text-green-400 mt-1">↑ 22% vs last month</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06);" class="rounded-xl p-4">
+              <div class="text-xs text-gray-500 mb-1">Appts Booked</div>
+              <div class="text-2xl font-black text-white">61</div>
+              <div class="text-xs text-green-400 mt-1">↑ 8% vs last month</div>
+            </div>
+            <div style="background:rgba(124,58,237,0.12); border:1px solid rgba(124,58,237,0.25);" class="rounded-xl p-4">
+              <div class="text-xs text-gray-500 mb-1">Conversion Rate</div>
+              <div class="text-2xl font-black gradient-text-purple">12.5%</div>
+              <div class="text-xs text-violet-400 mt-1">↑ 3.1% vs last month</div>
+            </div>
+          </div>
+
+          <!-- Chart + Recent Calls -->
+          <div class="grid gap-3" style="grid-template-columns: 1fr 340px;">
+
+            <!-- Bar chart -->
+            <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05);" class="rounded-xl p-4">
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-sm font-semibold text-white">Call Volume</span>
+                <div class="flex gap-3 text-xs text-gray-600">
+                  <span class="flex items-center gap-1"><span class="inline-block w-2 h-2 rounded-sm" style="background:#7c3aed"></span>Inbound</span>
+                  <span class="flex items-center gap-1"><span class="inline-block w-2 h-2 rounded-sm" style="background:#2563eb"></span>Outbound</span>
+                </div>
+              </div>
+              <!-- SVG Bar Chart -->
+              <svg viewBox="0 0 560 140" xmlns="http://www.w3.org/2000/svg" class="w-full">
+                <!-- Grid lines -->
+                <line x1="0" y1="112" x2="560" y2="112" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                <line x1="0" y1="84" x2="560" y2="84" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                <line x1="0" y1="56" x2="560" y2="56" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                <line x1="0" y1="28" x2="560" y2="28" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                <!-- Y labels -->
+                <text x="0" y="115" fill="rgba(255,255,255,0.2)" font-size="8">0</text>
+                <text x="0" y="87" fill="rgba(255,255,255,0.2)" font-size="8">10</text>
+                <text x="0" y="59" fill="rgba(255,255,255,0.2)" font-size="8">20</text>
+                <text x="0" y="31" fill="rgba(255,255,255,0.2)" font-size="8">30</text>
+                <!-- Bars: 14 days, each day has inbound + outbound bars side by side -->
+                <!-- Day 1: Mon -->
+                <rect x="18" y="72" width="12" height="40" rx="2" fill="#7c3aed" opacity="0.8"/>
+                <rect x="32" y="89" width="12" height="23" rx="2" fill="#2563eb" opacity="0.7"/>
+                <text x="31" y="125" fill="rgba(255,255,255,0.25)" font-size="7" text-anchor="middle">M</text>
+                <!-- Day 2: Tue -->
+                <rect x="58" y="56" width="12" height="56" rx="2" fill="#7c3aed" opacity="0.8"/>
+                <rect x="72" y="72" width="12" height="40" rx="2" fill="#2563eb" opacity="0.7"/>
+                <text x="71" y="125" fill="rgba(255,255,255,0.25)" font-size="7" text-anchor="middle">T</text>
+                <!-- Day 3: Wed -->
+                <rect x="98" y="64" width="12" height="48" rx="2" fill="#7c3aed" opacity="0.8"/>
+                <rect x="112" y="84" width="12" height="28" rx="2" fill="#2563eb" opacity="0.7"/>
+                <text x="111" y="125" fill="rgba(255,255,255,0.25)" font-size="7" text-anchor="middle">W</text>
+                <!-- Day 4: Thu -->
+                <rect x="138" y="44" width="12" height="68" rx="2" fill="#7c3aed" opacity="0.8"/>
+                <rect x="152" y="64" width="12" height="48" rx="2" fill="#2563eb" opacity="0.7"/>
+                <text x="151" y="125" fill="rgba(255,255,255,0.25)" font-size="7" text-anchor="middle">T</text>
+                <!-- Day 5: Fri -->
+                <rect x="178" y="52" width="12" height="60" rx="2" fill="#7c3aed" opacity="0.8"/>
+                <rect x="192" y="76" width="12" height="36" rx="2" fill="#2563eb" opacity="0.7"/>
+                <text x="191" y="125" fill="rgba(255,255,255,0.25)" font-size="7" text-anchor="middle">F</text>
+                <!-- Day 6: Sat -->
+                <rect x="218" y="90" width="12" height="22" rx="2" fill="#7c3aed" opacity="0.5"/>
+                <rect x="232" y="98" width="12" height="14" rx="2" fill="#2563eb" opacity="0.4"/>
+                <text x="231" y="125" fill="rgba(255,255,255,0.25)" font-size="7" text-anchor="middle">S</text>
+                <!-- Day 7: Sun -->
+                <rect x="258" y="94" width="12" height="18" rx="2" fill="#7c3aed" opacity="0.5"/>
+                <rect x="272" y="101" width="12" height="11" rx="2" fill="#2563eb" opacity="0.4"/>
+                <text x="271" y="125" fill="rgba(255,255,255,0.25)" font-size="7" text-anchor="middle">S</text>
+                <!-- Day 8: Mon -->
+                <rect x="298" y="68" width="12" height="44" rx="2" fill="#7c3aed" opacity="0.8"/>
+                <rect x="312" y="84" width="12" height="28" rx="2" fill="#2563eb" opacity="0.7"/>
+                <text x="311" y="125" fill="rgba(255,255,255,0.25)" font-size="7" text-anchor="middle">M</text>
+                <!-- Day 9: Tue -->
+                <rect x="338" y="48" width="12" height="64" rx="2" fill="#7c3aed" opacity="0.8"/>
+                <rect x="352" y="68" width="12" height="44" rx="2" fill="#2563eb" opacity="0.7"/>
+                <text x="351" y="125" fill="rgba(255,255,255,0.25)" font-size="7" text-anchor="middle">T</text>
+                <!-- Day 10: Wed (today highlight) -->
+                <rect x="378" y="36" width="12" height="76" rx="2" fill="url(#barGrad)" opacity="1"/>
+                <rect x="392" y="56" width="12" height="56" rx="2" fill="#2563eb" opacity="0.85"/>
+                <text x="391" y="125" fill="rgba(255,255,255,0.5)" font-size="7" text-anchor="middle" font-weight="bold">W</text>
+                <!-- Day 11: Thu -->
+                <rect x="418" y="52" width="12" height="60" rx="2" fill="#7c3aed" opacity="0.8"/>
+                <rect x="432" y="72" width="12" height="40" rx="2" fill="#2563eb" opacity="0.7"/>
+                <text x="431" y="125" fill="rgba(255,255,255,0.25)" font-size="7" text-anchor="middle">T</text>
+                <!-- Day 12: Fri -->
+                <rect x="458" y="44" width="12" height="68" rx="2" fill="#7c3aed" opacity="0.8"/>
+                <rect x="472" y="60" width="12" height="52" rx="2" fill="#2563eb" opacity="0.7"/>
+                <text x="471" y="125" fill="rgba(255,255,255,0.25)" font-size="7" text-anchor="middle">F</text>
+                <!-- Day 13: Sat -->
+                <rect x="498" y="88" width="12" height="24" rx="2" fill="#7c3aed" opacity="0.5"/>
+                <rect x="512" y="96" width="12" height="16" rx="2" fill="#2563eb" opacity="0.4"/>
+                <text x="511" y="125" fill="rgba(255,255,255,0.25)" font-size="7" text-anchor="middle">S</text>
+                <!-- Gradient def for today's bar -->
+                <defs>
+                  <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#a78bfa"/>
+                    <stop offset="100%" stop-color="#7c3aed"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+
+            <!-- Recent Calls -->
+            <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05);" class="rounded-xl p-4">
+              <div class="text-sm font-semibold text-white mb-4">Recent Calls</div>
+              <div class="flex flex-col gap-2.5">
+
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="text-xs text-white font-medium">+1 (512) 4•• ••••</div>
+                    <div class="text-xs text-gray-600">Real Estate · 3:42</div>
+                  </div>
+                  <span class="text-xs font-semibold px-2 py-0.5 rounded-full" style="background:rgba(52,211,153,0.15);color:#34d399;">Booked</span>
+                </div>
+
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="text-xs text-white font-medium">+1 (702) 8•• ••••</div>
+                    <div class="text-xs text-gray-600">HVAC · 2:15</div>
+                  </div>
+                  <span class="text-xs font-semibold px-2 py-0.5 rounded-full" style="background:rgba(96,165,250,0.15);color:#60a5fa;">Qualified</span>
+                </div>
+
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="text-xs text-white font-medium">+1 (305) 2•• ••••</div>
+                    <div class="text-xs text-gray-600">Dental · 4:01</div>
+                  </div>
+                  <span class="text-xs font-semibold px-2 py-0.5 rounded-full" style="background:rgba(52,211,153,0.15);color:#34d399;">Booked</span>
+                </div>
+
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="text-xs text-white font-medium">+1 (415) 6•• ••••</div>
+                    <div class="text-xs text-gray-600">Med Spa · 1:33</div>
+                  </div>
+                  <span class="text-xs font-semibold px-2 py-0.5 rounded-full" style="background:rgba(251,146,60,0.15);color:#fb923c;">Follow-up</span>
+                </div>
+
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="text-xs text-white font-medium">+1 (214) 9•• ••••</div>
+                    <div class="text-xs text-gray-600">Real Estate · 2:58</div>
+                  </div>
+                  <span class="text-xs font-semibold px-2 py-0.5 rounded-full" style="background:rgba(52,211,153,0.15);color:#34d399;">Booked</span>
+                </div>
+
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="text-xs text-white font-medium">+1 (646) 3•• ••••</div>
+                    <div class="text-xs text-gray-600">Law Firm · 5:12</div>
+                  </div>
+                  <span class="text-xs font-semibold px-2 py-0.5 rounded-full" style="background:rgba(96,165,250,0.15);color:#60a5fa;">Qualified</span>
+                </div>
+
+                <div class="mt-2 pt-2" style="border-top:1px solid rgba(255,255,255,0.05);">
+                  <span class="text-xs text-violet-400 cursor-pointer hover:text-violet-300">View all 487 calls →</span>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Looker Studio live embed (auto-shown when URL is set) -->
+      <div id="looker-wrapper" class="mt-6 hidden">
+        <div class="rounded-2xl overflow-hidden" style="border:1px solid rgba(124,58,237,0.3); box-shadow: 0 0 60px rgba(124,58,237,0.1);">
+          <div style="background:#0d0d1a; border-bottom:1px solid rgba(255,255,255,0.06);" class="px-4 py-3 flex items-center gap-3">
+            <div class="flex gap-1.5">
+              <div class="w-3 h-3 rounded-full" style="background:#ff5f57"></div>
+              <div class="w-3 h-3 rounded-full" style="background:#ffbd2e"></div>
+              <div class="w-3 h-3 rounded-full" style="background:#28c840"></div>
+            </div>
+            <div class="flex-1 flex justify-center">
+              <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);" class="text-xs text-gray-500 px-4 py-1 rounded-md">Live Data — Powered by Google Looker Studio</div>
+            </div>
+          </div>
+          <iframe id="looker-iframe" src="" width="100%" height="600" frameborder="0" style="display:block; background:#07071a;" allowfullscreen></iframe>
+        </div>
+      </div>
+
+      <script>
+        // Replace YOUR_LOOKER_STUDIO_URL with your real embed src from Looker Studio
+        // Share > Embed report > copy the src URL
+        var lookerURL = 'YOUR_LOOKER_STUDIO_URL';
+        if (lookerURL && lookerURL !== 'YOUR_LOOKER_STUDIO_URL') {
+          document.getElementById('looker-iframe').src = lookerURL;
+          document.getElementById('looker-wrapper').classList.remove('hidden');
+        }
+      </script>
+
+    </div>
+  </section>
+
+  <div class="section-divider max-w-6xl mx-auto"></div>
+
+  <!-- ===================== PRICING ===================== -->
+  <section id="pricing" class="py-24 px-6 relative z-10">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="tag text-xs font-medium px-3 py-1.5 rounded-full">Pricing</span>
+        <h2 class="text-4xl md:text-5xl font-black text-white mt-6 mb-4">
+          Simple, transparent pricing.<br/><span class="gradient-text">No surprises.</span>
+        </h2>
+        <p class="text-gray-400 max-w-xl mx-auto">One-time setup fee to build and deploy your agent. Then a flat monthly fee for ongoing management, monitoring, and support.</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+
+        <!-- Standard -->
+        <div class="card rounded-2xl p-8 flex flex-col">
+          <div class="mb-6">
+            <div class="text-gray-400 text-sm font-medium uppercase tracking-widest mb-3">Standard</div>
+            <div class="flex items-end gap-2 mb-1">
+              <span class="text-4xl font-black text-white">$997</span>
+              <span class="text-gray-500 mb-1">setup</span>
+            </div>
+            <div class="flex items-end gap-2">
+              <span class="text-2xl font-bold text-white">+ $297</span>
+              <span class="text-gray-500 mb-0.5">/ month</span>
+            </div>
+          </div>
+
+          <ul class="flex flex-col gap-3 mb-8 flex-1">
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <div class="check-icon"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              1 custom AI voice agent
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <div class="check-icon"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Calendar + CRM integration
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <div class="check-icon"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              SMS follow-up automation
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <div class="check-icon"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Weekly performance reports
+            </li>
+
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <div class="check-icon"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Monthly tune-ups included
+            </li>
+          </ul>
+
+          <a href="#contact" class="btn-ghost text-white font-semibold py-3.5 rounded-xl text-center text-sm">
+            Get Started
+          </a>
+        </div>
+
+        <!-- Growth (featured) -->
+        <div class="pricing-featured rounded-2xl p-8 flex flex-col relative overflow-hidden">
+          <div class="absolute top-4 right-4">
+            <span class="bg-violet-600 text-white text-xs font-bold px-3 py-1 rounded-full">Most Popular</span>
+          </div>
+          <div class="mb-6">
+            <div class="text-violet-400 text-sm font-medium uppercase tracking-widest mb-3">Growth</div>
+            <div class="flex items-end gap-2 mb-1">
+              <span class="text-4xl font-black text-white">$1,497</span>
+              <span class="text-gray-400 mb-1">setup</span>
+            </div>
+            <div class="flex items-end gap-2">
+              <span class="text-2xl font-bold text-white">+ $497</span>
+              <span class="text-gray-400 mb-0.5">/ month</span>
+            </div>
+          </div>
+
+          <ul class="flex flex-col gap-3 mb-8 flex-1">
+            <li class="flex items-center gap-3 text-sm text-gray-200">
+              <div class="check-icon"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Everything in Standard
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-200">
+              <div class="check-icon"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Up to 3 AI agents (multi-use-case)
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-200">
+              <div class="check-icon"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Unlimited calls/month
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-200">
+              <div class="check-icon"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Priority support + Slack access
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-200">
+              <div class="check-icon"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Advanced analytics dashboard
+              <span class="ml-auto text-xs font-bold px-2 py-0.5 rounded-full" style="background:rgba(251,146,60,0.15);color:#fb923c;border:1px solid rgba(251,146,60,0.25);">Soon</span>
+            </li>
+          </ul>
+
+          <a href="#contact" class="btn-primary text-white font-semibold py-3.5 rounded-xl text-center text-sm">
+            Get Started
+          </a>
+        </div>
+
+      </div>
+
+      <p class="text-center text-gray-600 text-sm mt-8">All plans cancel anytime. No long-term contracts. Setup completed within 72 hours.</p>
+    </div>
+  </section>
+
+  <div class="section-divider max-w-6xl mx-auto"></div>
+
+  <!-- ===================== TESTIMONIALS ===================== -->
+  <section class="py-24 px-6 relative z-10">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="tag text-xs font-medium px-3 py-1.5 rounded-full">Client Results</span>
+        <h2 class="text-4xl md:text-5xl font-black text-white mt-6">
+          What our clients are saying.
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-5">
+
+        <div class="testimonial-card rounded-2xl p-7">
+          <div class="flex gap-1 mb-5">
+            <span class="text-yellow-400 text-sm">★★★★★</span>
+          </div>
+          <p class="text-gray-300 text-sm leading-relaxed mb-6">"We were missing 30–40% of inbound calls after hours. Within a week of going live, our agent booked 11 consultations we would have completely lost. The ROI was immediate."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full btn-primary flex items-center justify-center text-white font-bold text-sm">JM</div>
+            <div>
+              <div class="text-white text-sm font-semibold">Jason M.</div>
+              <div class="text-gray-600 text-xs">Owner, Apex Dental Group</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card rounded-2xl p-7" style="border-color:rgba(124,58,237,0.25);">
+          <div class="flex gap-1 mb-5">
+            <span class="text-yellow-400 text-sm">★★★★★</span>
+          </div>
+          <p class="text-gray-300 text-sm leading-relaxed mb-6">"I was skeptical that an AI could handle the nuance of real estate conversations. It handles objections better than some of my junior staff. Genuinely impressive."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full btn-primary flex items-center justify-center text-white font-bold text-sm">SR</div>
+            <div>
+              <div class="text-white text-sm font-semibold">Sarah R.</div>
+              <div class="text-gray-600 text-xs">Broker, Summit Realty</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card rounded-2xl p-7">
+          <div class="flex gap-1 mb-5">
+            <span class="text-yellow-400 text-sm">★★★★★</span>
+          </div>
+          <p class="text-gray-300 text-sm leading-relaxed mb-6">"Setup was shockingly fast. They had our agent live in under 3 days and it's been flawless. The weekly reports alone are worth the monthly fee — we finally know our lead data."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full btn-primary flex items-center justify-center text-white font-bold text-sm">DK</div>
+            <div>
+              <div class="text-white text-sm font-semibold">David K.</div>
+              <div class="text-gray-600 text-xs">CEO, ClearPath HVAC</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FAQ ===================== -->
+  <section id="faq" class="py-24 px-6 relative z-10">
+    <div class="max-w-2xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-black text-white">Common questions.</h2>
+      </div>
+
+      <div class="flex flex-col gap-3">
+
+        <details class="faq-item card rounded-xl overflow-hidden">
+          <summary class="flex items-center justify-between p-6 text-white font-semibold">
+            Will callers know they're talking to an AI?
+            <span class="faq-icon text-gray-500 text-xl ml-4">+</span>
+          </summary>
+          <p class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">Our agents use natural, conversational voices that are nearly indistinguishable from human reps. That said, we always recommend transparency — we can configure your agent to disclose it's AI if required or preferred in your industry.</p>
+        </details>
+
+        <details class="faq-item card rounded-xl overflow-hidden">
+          <summary class="flex items-center justify-between p-6 text-white font-semibold">
+            What happens if the agent can't answer a question?
+            <span class="faq-icon text-gray-500 text-xl ml-4">+</span>
+          </summary>
+          <p class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">Your agent is trained with a fallback protocol — it can gracefully transfer calls to a human, take a message, or schedule a callback. We design for edge cases during the build phase so nothing falls through the cracks.</p>
+        </details>
+
+        <details class="faq-item card rounded-xl overflow-hidden">
+          <summary class="flex items-center justify-between p-6 text-white font-semibold">
+            How long does setup actually take?
+            <span class="faq-icon text-gray-500 text-xl ml-4">+</span>
+          </summary>
+          <p class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">Most clients go live within 48–72 hours of their discovery call. Complex multi-agent builds may take up to 5 business days. We'll give you a firm timeline before you pay anything.</p>
+        </details>
+
+        <details class="faq-item card rounded-xl overflow-hidden">
+          <summary class="flex items-center justify-between p-6 text-white font-semibold">
+            Can I update the agent's script or behavior later?
+            <span class="faq-icon text-gray-500 text-xl ml-4">+</span>
+          </summary>
+          <p class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">Yes — your monthly plan includes ongoing tune-ups. Just email us what you want changed and we'll handle it, usually within 24 hours. Growth clients get priority turnaround and can request changes via Slack.</p>
+        </details>
+
+        <details class="faq-item card rounded-xl overflow-hidden">
+          <summary class="flex items-center justify-between p-6 text-white font-semibold">
+            Is there a contract or commitment?
+            <span class="faq-icon text-gray-500 text-xl ml-4">+</span>
+          </summary>
+          <p class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">No long-term contracts. You pay the setup fee once, then month-to-month. Cancel anytime. We're confident in our results — we don't need to lock you in.</p>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== BOTTOM CTA ===================== -->
+  <section id="contact" class="py-24 px-6 relative z-10">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="card rounded-3xl p-12 relative overflow-hidden" style="border-color:rgba(124,58,237,0.2);">
+        <div class="orb orb-purple" style="width:400px;height:400px;top:-100px;left:-100px;opacity:0.5;"></div>
+        <div class="relative z-10">
+          <h2 class="text-4xl md:text-5xl font-black text-white mb-4 leading-tight">
+            Ready to stop<br/><span class="gradient-text">missing calls?</span>
+          </h2>
+          <p class="text-gray-400 mb-8 max-w-lg mx-auto">Book a free 20-minute demo call. We'll show you exactly what your agent would look like — no pressure, no obligation.</p>
+
+          <!-- Contact Form -->
+          <form id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="text-left max-w-lg mx-auto flex flex-col gap-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs text-gray-500 mb-1.5 uppercase tracking-widest">Your Name</label>
+                <input type="text" name="name" required placeholder="John Smith"
+                  class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-violet-500 transition-colors" />
+              </div>
+              <div>
+                <label class="block text-xs text-gray-500 mb-1.5 uppercase tracking-widest">Phone</label>
+                <input type="tel" name="phone" placeholder="(555) 000-0000"
+                  class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-violet-500 transition-colors" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs text-gray-500 mb-1.5 uppercase tracking-widest">Email</label>
+              <input type="email" name="email" required placeholder="you@yourbusiness.com"
+                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-violet-500 transition-colors" />
+            </div>
+            <div>
+              <label class="block text-xs text-gray-500 mb-1.5 uppercase tracking-widest">Industry / Business Type</label>
+              <select name="industry"
+                class="w-full bg-[#0d0d1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-gray-300 focus:outline-none focus:border-violet-500 transition-colors appearance-none">
+                <option value="" disabled selected>Select your industry</option>
+                <option>Real Estate</option>
+                <option>Dental / Medical</option>
+                <option>Home Services (HVAC, Plumbing, Roofing)</option>
+                <option>Med Spa / Salon</option>
+                <option>Law Firm</option>
+                <option>Auto Dealership</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs text-gray-500 mb-1.5 uppercase tracking-widest">Anything else? (optional)</label>
+              <textarea name="message" rows="3" placeholder="Tell us about your business, how many calls you get, what you're struggling with..."
+                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-violet-500 transition-colors resize-none"></textarea>
+            </div>
+            <input type="hidden" name="_subject" value="New Bot Demo Request — The Naughty Pickle Bot Support" />
+            <button type="submit"
+              class="btn-primary w-full text-white font-semibold py-4 rounded-xl text-base mt-1">
+              Book Your Free Demo →
+            </button>
+            <p class="text-center text-gray-600 text-xs">No credit card required. We'll follow up within 2 business hours.</p>
+          </form>
+
+          <!-- Success message (hidden by default) -->
+          <div id="form-success" class="hidden text-center py-8">
+            <div class="text-4xl mb-4">✅</div>
+            <h3 class="text-white font-bold text-xl mb-2">You're booked in!</h3>
+            <p class="text-gray-400 text-sm">We'll be in touch within 2 business hours to schedule your demo.</p>
+          </div>
+        </div>
+
+        <script>
+          document.getElementById('contact-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const data = new FormData(form);
+            try {
+              const res = await fetch(form.action, {
+                method: 'POST',
+                body: data,
+                headers: { 'Accept': 'application/json' }
+              });
+              if (res.ok) {
+                form.classList.add('hidden');
+                document.getElementById('form-success').classList.remove('hidden');
+              } else {
+                alert('Something went wrong. Please email us directly at thenaughtypicklehelp@gmail.com');
+              }
+            } catch {
+              alert('Something went wrong. Please email us directly at thenaughtypicklehelp@gmail.com');
+            }
+          });
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="py-12 px-6 relative z-10">
+    <div class="section-divider max-w-6xl mx-auto mb-12"></div>
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-gray-600">
+      <div class="flex items-center gap-2">
+        <img src="https://www.thenaughtypickle.com/wp-content/uploads/2025/08/ChatGPT-Image-Aug-26-2025-02_10_58-PM.png" alt="The Naughty Pickle" class="h-7 w-auto rounded" />
+        <span class="font-bold text-gray-400">The Naughty Pickle <span class="text-violet-400">Bot Support</span></span>
+      </div>
+      <div class="flex gap-8">
+        <a href="#how-it-works" class="hover:text-gray-300 transition-colors">How it Works</a>
+        <a href="#pricing" class="hover:text-gray-300 transition-colors">Pricing</a>
+        <a href="#faq" class="hover:text-gray-300 transition-colors">FAQ</a>
+        <a href="mailto:thenaughtypicklehelp@gmail.com" class="hover:text-gray-300 transition-colors">Contact</a>
+      </div>
+      <div>© 2025 The Naughty Pickle Bot Support. All rights reserved.</div>
+    </div>
+  </footer>
+
+</body>
+</html>
